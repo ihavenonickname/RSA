@@ -1,6 +1,6 @@
 class RSAKeyPair():
-    def __init__(self, expoent, mod):
-        self.expoent = expoent
+    def __init__(self, exponent, mod):
+        self.exponent = exponent
         self.mod = mod
 
 # Knuth in "The art of computer programming" introduced this algorithm for
@@ -41,22 +41,22 @@ def generate_rsa_keys(p, q):
     # The bit length of n is the bit length of the encrypted values.
     n = p * q
 
-    # This is the public expoent. It's a cool prime number that makes
+    # This is the public exponent. It's a cool prime number that makes
     # exponentiation very fast -- only 2 bits are set.
     e = 65537
 
-    # This is the private expoent. It's a modular inverse of the public key. In
+    # This is the private exponent. It's a modular inverse of the public key. In
     # order to derive d from e attackers need to factorize p and q, which is
     # currently a fairly expandive operation.
     d = modinv(e, phi)
 
-    public_key = RSAKeyPair(expoent=e, mod=n)
-    private_key = RSAKeyPair(expoent=d, mod=n)
+    public_key = RSAKeyPair(exponent=e, mod=n)
+    private_key = RSAKeyPair(exponent=d, mod=n)
 
     return public_key, private_key
 
 def encrypt(value, key_pair):
-    return pow(value, key_pair.expoent, key_pair.mod)
+    return pow(value, key_pair.exponent, key_pair.mod)
 
 def main():
     # Two arbitrary primes.
