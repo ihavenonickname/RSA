@@ -1,7 +1,10 @@
-class RSAKeyPair():
+class RSAKey():
     def __init__(self, exponent, mod):
         self.exponent = exponent
         self.mod = mod
+
+    def encrypt(self, value):
+        return pow(value, self.exponent, self.mod)
 
 # Knuth in "The art of computer programming" introduced this algorithm for
 # finding 1/u mod v where both u and v are positive.
@@ -50,13 +53,10 @@ def generate_rsa_keys(p, q):
     # currently a fairly expandive operation.
     d = modinv(e, phi)
 
-    public_key = RSAKeyPair(exponent=e, mod=n)
-    private_key = RSAKeyPair(exponent=d, mod=n)
+    public_key = RSAKey(exponent=e, mod=n)
+    private_key = RSAKey(exponent=d, mod=n)
 
     return public_key, private_key
-
-def encrypt(value, key_pair):
-    return pow(value, key_pair.exponent, key_pair.mod)
 
 def main():
     # Two arbitrary primes.
@@ -65,8 +65,8 @@ def main():
     # A value not greater than mod.
     original_value = 42
 
-    encripted = encrypt(original_value, public_key)
-    decripted = encrypt(encripted, private_key)
+    encripted = public_key.encrypt(original_value)
+    decripted = private_key.encrypt(encripted)
 
     print(original_value, encripted, decripted)
 
